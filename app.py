@@ -1,6 +1,6 @@
 import os
 
-from loaders.document_loader import load_documents
+from loaders.document_loader import load_document
 from processing.chunker import chunk_documents
 from embeddings.embedding_model import EmbeddingModel
 from vectorstore.faiss_store import FAISSStore
@@ -8,14 +8,14 @@ from retrieval.retriever import Retriever
 from generation.generator import Generator
 
 
-DATA_DIR = "data/sample_documents"
+DATA_FILE = "data/sample_documents/sample.pdf"
 FAISS_DIR = "data/faiss_index"
 
 
 def build_index():
 
     print("Loading documents...")
-    documents = load_documents(DATA_DIR)
+    documents = load_document(DATA_FILE)
 
     if not documents:
         raise ValueError("No documents found.")
