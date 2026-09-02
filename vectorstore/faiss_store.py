@@ -1,4 +1,5 @@
 import os
+
 import faiss
 import numpy as np
 
@@ -18,10 +19,7 @@ class FAISSStore:
 
         texts = [document.page_content for document in documents]
 
-        embeddings = self.embedding_model.encode(
-            texts,
-            convert_to_numpy=True
-        )
+        embeddings = self.embedding_model.embed_documents(texts)
 
         embeddings = np.asarray(embeddings, dtype="float32")
 
@@ -37,13 +35,10 @@ class FAISSStore:
         if self.index is None:
             raise ValueError("FAISS index has not been built yet.")
 
-        query_embedding = self.embedding_model.encode(
-            [query],
-            convert_to_numpy=True
-        )
+        query_embedding = self.embedding_model.embed_query(query)
 
         query_embedding = np.asarray(
-            query_embedding,
+            [query_embedding],
             dtype="float32"
         )
 
@@ -61,7 +56,7 @@ class FAISSStore:
         return results
 
     def save(self, path="faiss_index"):
- 
+
         if self.index is None:
             raise ValueError("FAISS index has not been built yet.")
 
@@ -79,7 +74,7 @@ class FAISSStore:
         )
 
     def load(self, path="faiss_index"):
-        
+
         index_path = os.path.join(path, "index.faiss")
         documents_path = os.path.join(path, "documents.npy")
 

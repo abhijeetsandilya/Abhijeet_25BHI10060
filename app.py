@@ -20,7 +20,7 @@ def build_index():
     if not documents:
         raise ValueError("No documents found.")
 
-    print(f"Loaded {len(documents)} documents.")
+    print(f"Loaded {len(documents)} characters from the document.")
 
     print("Chunking documents...")
     chunks = chunk_documents(documents)
@@ -31,7 +31,7 @@ def build_index():
     embedding_model = EmbeddingModel()
 
     print("Building FAISS index...")
-    vector_store = FAISSStore(embedding_model.model)
+    vector_store = FAISSStore(embedding_model)
     vector_store.build(chunks)
 
     os.makedirs(FAISS_DIR, exist_ok=True)
